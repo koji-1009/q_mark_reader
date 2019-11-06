@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
       title: 'Q mark reader',
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.lime,
+        primarySwatch: Colors.blue,
       ),
       darkTheme: ThemeData(brightness: Brightness.dark),
       home: HomePage(),
@@ -28,21 +28,24 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          tooltip: 'serch',
+          child: Icon(Icons.search),
+          elevation: 2.0,
+        ),
         bottomNavigationBar: BottomAppBar(
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {},
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {},
+              ),
+            ],
           ),
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          ),
-        ],
-      ),
-    ));
+        ));
   }
 }
