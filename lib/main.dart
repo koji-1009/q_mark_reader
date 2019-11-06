@@ -30,7 +30,32 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () async {
+            final url = await showModalBottomSheet<String>(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.white,
+                builder: (context) =>
+                    SingleChildScrollView(
+                      child: Container(
+                          padding: EdgeInsets.only(
+                              top: 4,
+                              left: 16,
+                              right: 16,
+                              bottom: MediaQuery
+                                  .of(context)
+                                  .viewInsets
+                                  .bottom),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "URL",
+                            ),
+                            onSubmitted: (value) =>
+                            {Navigator.of(context).pop(value)},
+                          )),
+                    ));
+          },
           tooltip: 'serch',
           child: Icon(Icons.search),
           elevation: 2.0,
