@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:q_mark_reader/parts/UrlBottomSheet.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,9 +26,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var _currentUrl = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: <Widget>[Text(_currentUrl)],
+          ),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
@@ -35,26 +43,11 @@ class _HomePageState extends State<HomePage> {
                 context: context,
                 isScrollControlled: true,
                 backgroundColor: Colors.white,
-                builder: (context) =>
-                    SingleChildScrollView(
-                      child: Container(
-                          padding: EdgeInsets.only(
-                              top: 4,
-                              left: 16,
-                              right: 16,
-                              bottom: MediaQuery
-                                  .of(context)
-                                  .viewInsets
-                                  .bottom),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "URL",
-                            ),
-                            onSubmitted: (value) =>
-                            {Navigator.of(context).pop(value)},
-                          )),
-                    ));
+                builder: (context) => UrlBottomSheet());
+
+            setState(() {
+              _currentUrl = url ?? "";
+            });
           },
           tooltip: 'serch',
           child: Icon(Icons.search),
@@ -66,7 +59,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               IconButton(
-                icon: Icon(Icons.menu),
+                icon: Icon(Icons.list),
                 onPressed: () {},
               ),
             ],
