@@ -6,8 +6,12 @@ class UrlBottomSheet extends StatefulWidget {
 }
 
 class _UrlBottomSheetState extends State<UrlBottomSheet> {
+  final _focusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(_focusNode);
+
     return SingleChildScrollView(
       child: Container(
           padding: EdgeInsets.only(
@@ -16,6 +20,7 @@ class _UrlBottomSheetState extends State<UrlBottomSheet> {
               right: 8,
               bottom: MediaQuery.of(context).viewInsets.bottom + 4),
           child: TextField(
+            focusNode: _focusNode,
             decoration: InputDecoration(
               border: const UnderlineInputBorder(),
               labelText: "URL",
