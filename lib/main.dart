@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:q_mark_reader/bloc/HatenaBookmarkBloc.dart';
 import 'package:q_mark_reader/entity/UrlBookmark.dart';
+import 'package:q_mark_reader/parts/BookmarkWidget.dart';
 import 'package:q_mark_reader/parts/UrlBottomSheet.dart';
 
 void main() => runApp(App(bloc: HatenaBookmarkBloc()));
@@ -35,12 +36,34 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
+            child: Center(
           child: StreamBuilder<BookmarkResponse>(
-              stream: bloc.response,
-              initialData: null,
-              builder: (context, snapShot) =>
-                  Text(snapShot.hasData ? snapShot.data.count.toString() : "未選択")),
-        ),
+            stream: bloc.response,
+            initialData: null,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Text("Sorry, somthing wrong!");
+              }
+
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                  return const Text("Please Input new URL");
+                  break;
+                case ConnectionState.active:
+                  if (snapshot.hasData) {
+                    return BookmarkWidget(response: snapshot.data);
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                  break;
+                case ConnectionState.done:
+                default:
+                  return const CircularProgressIndicator();
+              }
+            },
+          ),
+        )),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
