@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:q_mark_reader/bloc/HatenaBookmarkBloc.dart';
+import 'package:q_mark_reader/entity/UrlBookmark.dart';
 import 'package:q_mark_reader/parts/UrlBottomSheet.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(App(bloc: HatenaBookmarkBloc()));
 
-class MyApp extends StatelessWidget {
+class App extends StatelessWidget {
+  final HatenaBookmarkBloc bloc;
+
+  const App({@required this.bloc});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,28 +19,27 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       darkTheme: ThemeData(brightness: Brightness.dark),
-      home: HomePage(),
+      home: HomePage(
+        bloc: bloc,
+      ),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+class HomePage extends StatelessWidget {
+  final HatenaBookmarkBloc bloc;
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  var _currentUrl = "";
+  const HomePage({@required this.bloc});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-          child: Column(
-            children: <Widget>[Text(_currentUrl)],
-          ),
+          child: StreamBuilder<BookmarkResponse>(
+              stream: bloc.response,
+              initialData: null,
+              builder: (context, snapShot) =>
+                  Text(snapShot.hasData ? snapShot.data.count.toString() : "未選択")),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FloatingActionButton(
@@ -45,9 +50,7 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: Colors.white,
                 builder: (context) => UrlBottomSheet());
 
-            setState(() {
-              _currentUrl = url ?? "";
-            });
+            bloc.url.add(url);
           },
           tooltip: 'serch',
           child: Icon(Icons.search),
