@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:q_mark_reader/entity/UrlBookmark.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,7 +13,16 @@ class BookmarkWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Image.network(response.screenshot),
+        Center(
+          child: CachedNetworkImage(
+            placeholder: (context, url) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: const CircularProgressIndicator(),
+            ),
+            errorWidget: (context, str, obj) => const Text("sorry error"),
+            imageUrl: response.screenshot,
+          ),
+        ),
         Row(
           children: <Widget>[
             Flexible(
