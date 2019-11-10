@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:q_mark_reader/entity/UrlBookmark.dart';
 import 'package:rxdart/rxdart.dart';
 
-class HatenaBookmarkBloc {
+class BookmarkBloc {
   final _urlController = PublishSubject<String>();
   final _responseController = BehaviorSubject<BookmarkResponse>();
 
@@ -12,7 +12,7 @@ class HatenaBookmarkBloc {
 
   ValueObservable<BookmarkResponse> get response => _responseController;
 
-  HatenaBookmarkBloc() {
+  BookmarkBloc() {
     _urlController.stream.listen(_handle);
   }
 

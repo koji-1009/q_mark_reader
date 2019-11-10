@@ -7,14 +7,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:q_mark_reader/bloc/HatenaBookmarkBloc.dart';
-
+import 'package:q_mark_reader/bloc/BookmarkBloc.dart';
+import 'package:q_mark_reader/bloc/UrlEntryBloc.dart';
 import 'package:q_mark_reader/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(App(bloc: HatenaBookmarkBloc(),));
+    await tester.pumpWidget(App(
+      bookmarkBloc: BookmarkBloc(),
+      urlEntryBloc: UrlEntryBloc(),
+    ));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
