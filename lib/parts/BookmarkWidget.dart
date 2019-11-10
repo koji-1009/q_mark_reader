@@ -61,14 +61,11 @@ class BookmarkWidget extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             itemBuilder: (BuildContext context, int index) {
-              var comment = "-";
-              if (response.bookmarks[index].comment.isNotEmpty) {
-                comment = response.bookmarks[index].comment;
-              }
+              final bookmark = response.bookmarks[index];
               return Card(
                   child: ListTile(
-                title: Text(comment),
-                subtitle: Text(response.bookmarks[index].tags.toString()),
+                title: Text(bookmark.user),
+                subtitle: Text(bookmark.comment),
               ));
             },
             itemCount: response.bookmarks.length,
