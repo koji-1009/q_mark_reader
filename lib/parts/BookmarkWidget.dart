@@ -15,44 +15,51 @@ class BookmarkWidget extends StatelessWidget {
         Image.network(response.screenshot),
         Row(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                response.url,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .title,
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  response.url,
+                  style: Theme.of(context).textTheme.title,
+                ),
               ),
             ),
-            FlatButton(
-              child: const Icon(Icons.link),
-              onPressed: () async {
-                _launchURL(response.entry_url);
-              },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                icon: const Icon(Icons.link),
+                tooltip: "Hatena Link",
+                onPressed: () async {
+                  _launchURL(response.entry_url);
+                },
+              ),
             ),
           ],
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text("Bookmark count : " + response.count.toString(),
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .body1),
+          child: Row(
+            children: <Widget>[
+              const Icon(
+                Icons.bookmark,
+                color: Colors.blue,
+              ),
+              Text(response.count.toString()),
+            ],
+          ),
         ),
         Expanded(
           child: ListView.builder(
             itemBuilder: (BuildContext context, int index) {
-              var comment = "no comment";
+              var comment = "-";
               if (response.bookmarks[index].comment.isNotEmpty) {
                 comment = response.bookmarks[index].comment;
               }
               return Card(
                   child: ListTile(
-                    title: Text(comment),
-                    subtitle: Text(response.bookmarks[index].tags.toString()),
-                  ));
+                title: Text(comment),
+                subtitle: Text(response.bookmarks[index].tags.toString()),
+              ));
             },
             itemCount: response.bookmarks.length,
             shrinkWrap: true,
