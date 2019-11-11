@@ -43,6 +43,17 @@ class HomePage extends StatelessWidget {
 
   const HomePage({@required this.bookmarkBloc, @required this.urlEntryBloc});
 
+  void _addUrl(String url) {
+    if (url == null ||
+        url.isEmpty ||
+        !Uri.parse(url).isAbsolute) {
+      return;
+    }
+
+    urlEntryBloc.url.add(url);
+    bookmarkBloc.url.add(url);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,8 +95,7 @@ class HomePage extends StatelessWidget {
               backgroundColor: Colors.white,
               builder: (context) => UrlBottomSheet());
 
-          urlEntryBloc.url.add(url);
-          bookmarkBloc.url.add(url);
+          _addUrl(url);
         },
         tooltip: 'serch',
         child: Icon(Icons.search),
@@ -113,8 +123,13 @@ class HomePage extends StatelessWidget {
                                 builder: (context) =>
                                     UrlEntryBottomSheet(snapshot.data));
 
-                            urlEntryBloc.url.add(url);
-                            bookmarkBloc.url.add(url);
+                            if (url == null ||
+                                url.isEmpty ||
+                                !Uri.parse(url).isAbsolute) {
+                              return;
+                            }
+
+                            _addUrl(url);
                           });
                     }
 

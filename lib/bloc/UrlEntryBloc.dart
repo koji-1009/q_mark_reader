@@ -18,6 +18,10 @@ class UrlEntryBloc {
   }
 
   void _handle(String url) async {
+    if (!Uri.parse(url).isAbsolute) {
+      return;
+    }
+
     await helper.insert(url);
 
     updateEntryController();
