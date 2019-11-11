@@ -44,9 +44,7 @@ class HomePage extends StatelessWidget {
   const HomePage({@required this.bookmarkBloc, @required this.urlEntryBloc});
 
   void _addUrl(String url) {
-    if (url == null ||
-        url.isEmpty ||
-        !Uri.parse(url).isAbsolute) {
+    if (url == null || url.isEmpty || !Uri.parse(url).isAbsolute) {
       return;
     }
 
@@ -86,21 +84,6 @@ class HomePage extends StatelessWidget {
           },
         ),
       )),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final url = await showModalBottomSheet<String>(
-              context: context,
-              isScrollControlled: true,
-              backgroundColor: Colors.white,
-              builder: (context) => UrlBottomSheet());
-
-          _addUrl(url);
-        },
-        tooltip: 'serch',
-        child: Icon(Icons.search),
-        elevation: 2.0,
-      ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
             mainAxisSize: MainAxisSize.max,
@@ -114,7 +97,8 @@ class HomePage extends StatelessWidget {
                         snapshot.hasData &&
                         snapshot.data.isNotEmpty) {
                       return IconButton(
-                          icon: Icon(Icons.list),
+                          icon: const Icon(Icons.list),
+                          tooltip: "show a list of searched URLs",
                           onPressed: () async {
                             final url = await showModalBottomSheet<String>(
                                 context: context,
@@ -134,7 +118,20 @@ class HomePage extends StatelessWidget {
                     }
 
                     return const Spacer();
-                  })
+                  }),
+              IconButton(
+                icon: const Icon(Icons.search),
+                tooltip: 'search new url',
+                onPressed: () async {
+                  final url = await showModalBottomSheet<String>(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.white,
+                      builder: (context) => UrlBottomSheet());
+
+                  _addUrl(url);
+                },
+              )
             ]),
       ),
     );
