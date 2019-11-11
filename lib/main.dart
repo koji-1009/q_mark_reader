@@ -7,12 +7,10 @@ import 'package:q_mark_reader/parts/BookmarkWidget.dart';
 import 'package:q_mark_reader/parts/UrlEntryBottomSheet.dart';
 import 'package:q_mark_reader/parts/UrlInputBottomSheet.dart';
 
-void main() {
-  return runApp(App(
-    bookmarkBloc: BookmarkBloc(),
-    urlEntryBloc: UrlEntryBloc(),
-  ));
-}
+void main() => runApp(App(
+      bookmarkBloc: BookmarkBloc(),
+      urlEntryBloc: UrlEntryBloc(),
+    ));
 
 class App extends StatelessWidget {
   final BookmarkBloc bookmarkBloc;
@@ -28,7 +26,9 @@ class App extends StatelessWidget {
         brightness: Brightness.light,
         primarySwatch: Colors.blue,
       ),
-      darkTheme: ThemeData(brightness: Brightness.dark),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+      ),
       home: HomePage(
         bookmarkBloc: bookmarkBloc,
         urlEntryBloc: urlEntryBloc,
@@ -85,6 +85,7 @@ class HomePage extends StatelessWidget {
         ),
       )),
       bottomNavigationBar: BottomAppBar(
+        elevation: 2,
         child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
