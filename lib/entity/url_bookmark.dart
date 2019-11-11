@@ -1,19 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'UrlBookmark.g.dart';
-
-enum NetworkStatus {
-  LOADING,
-  SUCCESS,
-  ERROR
-}
-
-class UrlFetchState {
-  final status;
-  final response;
-
-  UrlFetchState(this.status, this.response);
-}
+part 'url_bookmark.g.dart';
 
 @JsonSerializable()
 class BookmarkResponse {
