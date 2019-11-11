@@ -7,23 +7,26 @@ import 'package:rxdart/rxdart.dart';
 
 class BookmarkBloc {
   final _urlController = PublishSubject<String>();
-  final _responseController = BehaviorSubject<BookmarkResponse>();
+  final _responseController = BehaviorSubject<UrlFetchState>();
 
   Sink<String> get url => _urlController.sink;
 
-  ValueObservable<BookmarkResponse> get response => _responseController;
+  ValueObservable<UrlFetchState> get response => _responseController;
 
   BookmarkBloc() {
     _urlController.stream.listen(_handle);
+    _responseController.add(null);
   }
 
   void _handle(String url) {
-    _request(url).then((response) => _responseController.add(response));
+    _responseController.add(UrlFetchState(NetworkStatus.LOADING, null));
+    _request(url).then((response) => _responseController
+        .add(UrlFetchState(NetworkStatus.SUCCESS, response)));
   }
 
   Future<BookmarkResponse> _request(String url) async {
     if (!Uri.parse(url).isAbsolute) {
-      throw("url is not absolute");
+      throw ("url is not absolute");
     }
 
     final requestUrl = 'https://b.hatena.ne.jp/entry/jsonlite/' + url;

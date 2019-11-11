@@ -57,27 +57,22 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
           child: Center(
-        child: StreamBuilder<BookmarkResponse>(
+        child: StreamBuilder<UrlFetchState>(
           stream: bookmarkBloc.response,
-          initialData: null,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Text("Sorry, somthing wrong!");
             }
 
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.waiting:
+            if (!snapshot.hasData) {
+              return const Text("Please Input new URL");
+            }
+
+            switch (snapshot.data.status) {
+              case NetworkStatus.SUCCESS:
+                return BookmarkWidget(response: snapshot.data.response);
+              case NetworkStatus.ERROR:
                 return const Text("Please Input new URL");
-                break;
-              case ConnectionState.active:
-                if (snapshot.hasData) {
-                  return BookmarkWidget(response: snapshot.data);
-                } else {
-                  return const CircularProgressIndicator();
-                }
-                break;
-              case ConnectionState.done:
               default:
                 return const CircularProgressIndicator();
             }
@@ -104,7 +99,6 @@ class HomePage extends StatelessWidget {
                             final url = await showModalBottomSheet<String>(
                                 context: context,
                                 isScrollControlled: true,
-                                backgroundColor: Colors.white,
                                 builder: (context) =>
                                     UrlEntryBottomSheet(snapshot.data));
 
@@ -127,7 +121,6 @@ class HomePage extends StatelessWidget {
                   final url = await showModalBottomSheet<String>(
                       context: context,
                       isScrollControlled: true,
-                      backgroundColor: Colors.white,
                       builder: (context) => UrlBottomSheet());
 
                   _addUrl(url);
