@@ -9,24 +9,23 @@ class UrlBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = DisposableProvider.of<UrlEntryBloc>(context);
 
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.only(
-            top: 4,
-            left: 8,
-            right: 8,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 4),
-        child: TextField(
-            autofocus: true,
-            decoration: InputDecoration(
-              border: const UnderlineInputBorder(),
-              labelText: "URL",
-            ),
-            onSubmitted: (value) {
-              bloc.url.add(value);
-              Navigator.pop(context);
-            }),
-      ),
+    return Container(
+      padding: EdgeInsets.only(
+          top: 0,
+          left: 8,
+          right: 8,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 8),
+      child: TextField(
+          keyboardType: TextInputType.url,
+          autofocus: true,
+          decoration: InputDecoration(
+            border: const UnderlineInputBorder(),
+            labelText: "URL",
+          ),
+          onSubmitted: (value) {
+            bloc.url.add(value);
+            Navigator.pop(context);
+          }),
     );
   }
 }
