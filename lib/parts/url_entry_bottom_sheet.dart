@@ -19,12 +19,13 @@ class UrlEntryBottomSheet extends StatelessWidget {
 
           final list = snapshot.data;
           return Container(
+            height: 200,
             child: ListView.builder(
-              shrinkWrap: true,
               itemBuilder: (context, index) {
                 final entry = list[index];
                 return Dismissible(
                   key: ValueKey(entry.url),
+                  background: Container(color: Theme.of(context).errorColor),
                   direction: DismissDirection.endToStart,
                   onDismissed: (direction) {
                     if (direction != DismissDirection.endToStart) {
