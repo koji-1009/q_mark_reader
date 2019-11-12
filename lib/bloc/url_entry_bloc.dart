@@ -76,9 +76,12 @@ class UrlEntryBloc extends Disposable {
     }
 
     final json = jsonDecode(response.body);
-    final bookmarkResponse = BookmarkResponse.fromJson(json);
-
-    _responseController.add(bookmarkResponse);
-    _fetchStatusController.add(NetworkStatus.SUCCESS);
+    try {
+      final bookmarkResponse = BookmarkResponse.fromJson(json);
+      _responseController.add(bookmarkResponse);
+      _fetchStatusController.add(NetworkStatus.SUCCESS);
+    } catch (e) {
+      _fetchStatusController.add(NetworkStatus.ERROR);
+    }
   }
 }
