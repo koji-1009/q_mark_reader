@@ -21,11 +21,14 @@ class UrlEntryBloc extends Disposable {
   final _helper = UrlEntryHelper();
 
   final _urlController = PublishSubject<String>();
+  final _deleteUrlController = PublishSubject<String>();
   final _entryController = BehaviorSubject<List<UrlEntry>>();
   final _fetchStatusController = BehaviorSubject<NetworkStatus>();
   final _responseController = BehaviorSubject<BookmarkResponse>();
 
   Sink<String> get url => _urlController.sink;
+
+  Sink<String> get deleteUrl => _deleteUrlController;
 
   ValueObservable<List<UrlEntry>> get entryList => _entryController;
 
@@ -36,17 +39,23 @@ class UrlEntryBloc extends Disposable {
   UrlEntryBloc() {
     _updateEntryController();
 
-    _urlController.stream.where(_isValidUrl).listen(_handle);
+    _urlController.stream.where(_isValidUrl).listen(_handleAddUrl);
+    _deleteUrlController.listen(_handleDeleteUrl);
     _fetchStatusController.add(NetworkStatus.NONE);
   }
 
   bool _isValidUrl(String url) =>
       url != null && url.isNotEmpty && Uri.parse(url).isAbsolute;
 
-  void _handle(String url) async {
+  void _handleAddUrl(String url) async {
     await _helper.insert(url);
     await _updateEntryController();
     await _request(url);
+  }
+
+  void _handleDeleteUrl(String url) async {
+    await _helper.delete(url);
+    await _updateEntryController();
   }
 
   Future<void> _updateEntryController() async {

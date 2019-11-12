@@ -23,12 +23,23 @@ class UrlEntryBottomSheet extends StatelessWidget {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 final entry = list[index];
-                return ListTile(
-                  title: Text(entry.url),
-                  onTap: () {
-                    bloc.url.add(entry.url);
-                    Navigator.pop(context);
+                return Dismissible(
+                  key: ValueKey(entry.url),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) {
+                    if (direction != DismissDirection.endToStart) {
+                      return;
+                    }
+
+                    bloc.deleteUrl.add(entry.url);
                   },
+                  child: ListTile(
+                    title: Text(entry.url),
+                    onTap: () {
+                      bloc.url.add(entry.url);
+                      Navigator.pop(context);
+                    },
+                  ),
                 );
               },
               itemCount: list.length,
