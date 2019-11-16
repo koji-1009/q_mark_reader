@@ -73,7 +73,7 @@ class UrlEntryHelper {
     final db = await provider.database;
 
     final maps = await db
-        .rawQuery('SELECT * FROM $tableUrlEntry ORDER BY date($columnDate)');
+        .rawQuery('SELECT * FROM $tableUrlEntry ORDER BY date($columnDate) DESC');
     if (maps.isNotEmpty) {
       return maps
           .map((value) => UrlEntry.fromMap(value))
