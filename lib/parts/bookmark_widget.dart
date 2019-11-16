@@ -36,6 +36,7 @@ class BookmarkWidget extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Flexible(
+                    fit: FlexFit.tight,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
